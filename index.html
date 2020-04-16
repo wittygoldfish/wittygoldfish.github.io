@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>D3: Zoom in to reveal counties</title>
+    <title>Witty Goldfish</title>
     <style>
         .background {
             fill: none;
@@ -103,7 +103,7 @@
                 .attr('class', 'd3-tip')
                 .offset([-5, 0])
                 .html(function(d) {
-                    var textStr = "Job Stuff: " + username + "<br />";
+                    var textStr = countyClicked + " County" +"<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
@@ -147,7 +147,7 @@
             .attr('height', height + margin.top + margin.bottom)
 
         function ready(us) {
-          
+
 
             g.append("g")
                 .attr("id", "counties")
