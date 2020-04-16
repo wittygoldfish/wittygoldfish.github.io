@@ -214,8 +214,9 @@
         }
 
         function reset() {
-            console.log(active);
-
+            //console.log(active);
+            countyClicked = "";
+            tip.hide();
             active.classed("active", false);
             active = d3.select(null);
 
