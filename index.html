@@ -48,11 +48,35 @@
     </style>
 </head>
 <body>
+
+  <form id="myForm" action="/index.html">
+  <label for="fname">Username:</label>
+  <input type="text" id="fname" name="fname" value="">
+  <label for="lname">Password:</label>
+  <input type="text" id="password" name="password" value="">
+  <input type="button" onclick="login()" value="Submit"><br><br>
+  </form>
+
     <div class="viz"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/topojson.v3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
     <script type="text/javascript">
+
+
+        var username = "";
+
+        function login() {
+          username = document.getElementById("fname").value;
+          Password = document.getElementById("password").value;
+
+          document.getElementById("fname").value = "";
+          document.getElementById("password").value = "";
+
+        }
+
+
+
         var margin = {
             top: 10,
             bottom: 10,
@@ -79,7 +103,7 @@
                 .attr('class', 'd3-tip')
                 .offset([-5, 0])
                 .html(function(d) {
-                    var textStr = "Job Stuff: " + "blahblahblah" + "<br />";
+                    var textStr = "Job Stuff: " + username + "<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
                     textStr += "Job Stuff: " + "blahblahblah" + "<br />";
@@ -114,6 +138,8 @@
         var path = d3.geoPath()
             .projection(projection);
 
+        var countyClicked = "";
+
         var g = svg.append("g")
             .attr('class', 'center-container center-items us-state')
             .attr('transform', 'translate('+margin.left+','+margin.top+')')
@@ -129,7 +155,19 @@
                 .enter().append("path")
                 .attr("d", path)
                 .attr("class", "county-boundary")
-                .on("click", tip.show);
+                .on("click", tip.show)
+                //.on("click", reset)
+                .on('mousedown.log', function (d) {
+                  console.log(d.id);
+                  console.log(d.properties.name);
+                  if(countyClicked == d.properties.name){
+                    countyClicked = "";
+                    reset();
+                    tip.hide(d);
+                  }else{
+                    countyClicked = d.properties.name;
+                  }
+                });
 
             g.append("g")
                 .attr("id", "states")
@@ -139,6 +177,7 @@
                 .attr("d", path)
                 .attr("class", "state")
                 .on("click", clicked);
+
 
 
             g.append("path")
@@ -170,8 +209,13 @@
                 .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
         }
 
+        function checkDoubleClick(d) {
+
+        }
 
         function reset() {
+            console.log(active);
+
             active.classed("active", false);
             active = d3.select(null);
 
